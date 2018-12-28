@@ -2,7 +2,24 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync'
+import { ApolloProvider } from 'react-apollo'
+import { Rehydrated } from 'aws-appsync-react'
+
+const client = new AWSAppSyncClient({
+  url: 'test',
+  region: 'test',
+  auth: {
+    type: AUTH_TYPE.API_KEY,
+    apiKey: 'test',
+  }
+})
+
+interface Props {
+
+}
+
+class App extends Component<Props> {
   render() {
     return (
       <div className="App">
@@ -25,4 +42,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const WithProvider = () => (
+  <ApolloProvider client={client}>
+    <Rehydrated>
+      <App />
+    </Rehydrated>
+  </ApolloProvider>
+)
+
+export default WithProvider
